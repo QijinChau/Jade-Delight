@@ -117,14 +117,16 @@ function makeSelect(name, minRange, maxRange)
 				alert("You need to enter the street and city name for delivery!");
 			} else {
 				if(pickupChecked) {
-					if(minutes >= 45) {
+					if(minutes == 45)
+						minutes = 0;
+					else 
 						minutes = 0 + (60 - minutes);
-						if(minutes < 10) 
-							minutes = "0" + minutes; 
+					if(minutes < 10) 
+						minutes = "0" + minutes; 
 
-						hour++;
-						if(hour == 23) 
-							hour = 0;
+					hour++;
+					if(hour == 23) 
+						hour = 0;
 					} else {
 						minutes += 15;
 					}
@@ -135,14 +137,16 @@ function makeSelect(name, minRange, maxRange)
 					alert(message);
 				}
 				if(deliveryChecked) {
-					if(minutes >= 30) {
+					if(minutes == 30)
+						minutes = 0;
+					else 
 						minutes = 0 + (60 - minutes);
-						if(minutes < 10) 
-							minutes = "0" + minutes; 
+					if(minutes < 10) 
+						minutes = "0" + minutes;  
 
-						hour++;
-						if(hour == 23) 
-							hour = 0;
+					hour++;
+					if(hour == 23) 
+						hour = 0;
 					} else {
 						minutes += 30;
 					}
