@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Jade Delight</title>
+</head>
+
+<body>
+<script language="javascript">
+
+function MenuItem(name, cost)
+{
+	this.name = name;
+	this.cost=cost;
+}
+
+menuItems = new Array(
+	new MenuItem("Chicken Chop Suey", 4.5),
+	new MenuItem("Sweet and Sour Pork", 6.25),
+	new MenuItem("Shrimp Lo Mein", 5.25),
+	new MenuItem("Moo Shi Chicken", 6.5),
+	new MenuItem("Fried Rice", 2.35)
+);
+
+function makeSelect(name, minRange, maxRange)
+{
+	var t= "";
+	t = "<select name='" + name + "' size='1'>";
+	for (j=minRange; j<=maxRange; j++)
+	   t += "<option>" + j + "</option>";
+	t+= "</select>"; 
+	return t;
+}
+</script>
+
+<h1>Jade Delight</h1>
+<form>
+
+<p>First Name: <input type="text"  name='fname' /></p>
+<p>Last Name*:  <input type="text"  name='lname' /></p>
+<p>Street: <input type="text"  name='street' /></p>
+<p>City: <input type="text"  name='city' /></p>
+<p>Phone*: <input type="text"  name='phone' /></p>
+<p> 
+	<input type="radio"  name="p_or_d" value = "pickup" checked="checked"/>Pickup  
+	<input type="radio"  name='p_or_d' value = 'delivery'/>
+	Delivery
+</p>
+<table border="0" cellpadding="3">
+  <tr>
+    <th>Select Item</th>
+    <th>Item Name</th>
+    <th>Cost Each</th>
+    <th>Total Cost</th>
+  </tr>
+<script language="javascript">
+
+  var s = "";
+  for (i=0; i< menuItems.length; i++)
+  {
+	  s += "<tr><td>";
+	  s += makeSelect("quan" + i, 0, 10);
+	  s += "</td><td>" + menuItems[i].name + "</td>";
+	  s += "<td> $ " + menuItems[i].cost.toFixed(2) + "</td>";
+	  s += "<td>$<input type='text' name='cost'/></td></tr>";
+  }
+  document.writeln(s);
+</script>
+</table>
+<p>Subtotal: 
+   $<input type="text"  name='subtotal' id="subtotal" />
+</p>
+<p>Mass tax 6.25%:
+  $ <input type="text"  name='tax' id="tax" />
+</p>
+<p>Total: $ <input type="text"  name='total' id="total" />
+</p>
+
+<input type = "submit" value = "Submit Order" />
+
+</form>
+
+	<script language = "javascript">
+		document.forms[0].onsubmit = function() {validate()};
+		function validate() {
+			var lnameValue = document.getElementsByName('lname')[0].value;
+			var pickupChecked = document.getElementsByName('p_or_d')[0].checked;
+			var deliveryChecked = document.getElementsByName('p_or_d')[1].checked;
+			var streetName = document.getElementsByName('street')[0].value;
+			var cityName = document.getElementsByName('city')[0].value;
+			var total = document.getElementById("total").value;
+
+			// phone number validation
+			var realPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+			var validPhone = realPhone.exec(document.getElementsByName('phone')[0].value);
+			if(lnameValue == "" && !validPhone)
+				alert("Last name is required!\nValid phone number is required!");
+			else if(lnameValue == "")
+				alert("Last name is required!");
+			else if(!validPhone)
+				alert("Valid phone number is required!");
+			else if(deliveryChecked && (streetName == "" || cityName == "")) {
+				alert("You need to enter the street and city name for delivery!");
+			} else {
+				if(pickupChecked) {
+					var message = "Thank you for your order! Your total is " 
+									+ total + ". Pick up in 15 minutes.";
+					alert(message);
+				}
+				if(deliveryChecked) {
+					var message = "Thank you for your order! Your total is " 
+									+ total + " and will be delivered in 30 minutes!";
+					alert(message);
+				}
+			}
+		}
+
+		// function to update the total costs, subtotal, tax, and total
+		function update(selectedItem) {
+			var index = selectedItem.name[4];
+			var costEach = document.getElementsByName("cost");
+			var costEachValue = selectedItem.value * menuItems[index].cost;
+			costEach[index].value = costEachValue.toFixed(2);
+
+			var sum = 0, val;
+			for (i=0; i<costEach.length; i++) {
+				val = parseFloat(costEach[i].value);
+				if(!isNaN(val))
+					sum += parseFloat(costEach[i].value);
+			}
+			
+			var justTax = sum * 0.0625;
+			document.getElementById("subtotal").value = sum.toFixed(2);
+			document.getElementById("tax").value = justTax.toFixed(2);
+			document.getElementById("total").value = (sum + justTax).toFixed(2);
+		}
+
+		// onchange event for the quantities of all the menu items
+		for (j=0; j<menuItems.length; j++) {
+			var quantity = document.getElementsByName("quan" + j);
+			quantity.forEach((selectedItem) => {
+				selectedItem.onchange = function() {update(selectedItem)};
+			});
+  		}
+	</script>
+
+</body>
+</html>
