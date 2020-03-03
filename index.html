@@ -89,6 +89,8 @@ function makeSelect(name, minRange, maxRange)
 			var streetName = document.getElementsByName('street')[0].value;
 			var cityName = document.getElementsByName('city')[0].value;
 			var total = document.getElementById("total").value;
+			if(total == "")
+				total = 0;
 
 			// phone number validation
 			var realPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -103,12 +105,12 @@ function makeSelect(name, minRange, maxRange)
 				alert("You need to enter the street and city name for delivery!");
 			} else {
 				if(pickupChecked) {
-					var message = "Thank you for your order! Your total is " 
+					var message = "Thank you for your order! Your total is $" 
 									+ total + ". Pick up in 15 minutes.";
 					alert(message);
 				}
 				if(deliveryChecked) {
-					var message = "Thank you for your order! Your total is " 
+					var message = "Thank you for your order! Your total is $" 
 									+ total + " and will be delivered in 30 minutes!";
 					alert(message);
 				}
