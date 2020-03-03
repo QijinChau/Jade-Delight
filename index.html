@@ -120,7 +120,7 @@ function makeSelect(name, minRange, maxRange)
 					if(minutes == 45)
 						minutes = 0;
 					else 
-						minutes = 0 + (60 - minutes);
+						minutes = 0 + (minutes - 45);
 					if(minutes < 10) 
 						minutes = "0" + minutes; 
 
@@ -140,7 +140,7 @@ function makeSelect(name, minRange, maxRange)
 					if(minutes == 30)
 						minutes = 0;
 					else 
-						minutes = 0 + (60 - minutes);
+						minutes = 0 + (minutes - 30);
 					if(minutes < 10) 
 						minutes = "0" + minutes;  
 
